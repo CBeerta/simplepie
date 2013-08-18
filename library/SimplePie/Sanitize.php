@@ -314,7 +314,15 @@ class SimplePie_Sanitize
 							}
 							else
 							{
-								$file = $this->registry->create('File', array($img['attribs']['src']['data'], $this->timeout, 5, array('X-FORWARDED-FOR' => $_SERVER['REMOTE_ADDR']), $this->useragent, $this->force_fsockopen));
+								$file = $this->registry->create(
+										'File', 
+										array($img->getAttribute('src'), 
+											$this->timeout, 
+											5, 
+											array('X-FORWARDED-FOR' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1'), 
+											$this->useragent, 
+											$this->force_fsockopen)
+								);
 								$headers = $file->headers;
 
 								if ($file->success && ($file->method & SIMPLEPIE_FILE_SOURCE_REMOTE === 0 || ($file->status_code === 200 || $file->status_code > 206 && $file->status_code < 300)))
